@@ -4,20 +4,24 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
+		"start:chrome": "web-ext run --target chromium --source-dir ./",
+		"start:firefox": "web-ext run --firefox --source-dir ./",
+		"start:firefoxdev": "web-ext run --firefox=firefoxdeveloperedition --source-dir ./",
 		"build": "node build.js",
 		"version": "node version.js",
-		"test": "eslint . && stylelint \"**/*.css\"",
-		"fix": "eslint . --fix && stylelint \"**/*.css\" --fix"
+		"test": "eslint . && stylelint \"**/*.css\" && prettier \"**/*.css\" --check",
+		"test:ext": "web-ext lint",
+		"fix": "eslint . --fix && stylelint \"**/*.css\" --fix && prettier \"**/*.css\" --write"
 	},
 	"devDependencies": {
-		"archiver": "^5.3.0",
-		"eslint": "^7.30.0",
-		"eslint-config-standard": "^16.0.3",
-		"eslint-plugin-import": "^2.23.4",
-		"eslint-plugin-node": "^11.1.0",
-		"eslint-plugin-promise": "^5.1.0",
-		"stylelint": "^14.0.1",
-		"stylelint-config-standard": "^23.0.0"
+		"@types/chrome": "^0.0.299",
+		"@types/firefox-webext-browser": "^120.0.3",
+		"archiver": "^7.0.1",
+		"eslint": "^9.10.0",
+		"prettier": "^3.3.2",
+		"stylelint": "^16.5.0",
+		"stylelint-config-standard": "^37.0.0",
+		"web-ext": "^8.0.0"
 	},
 	"repository": {
 		"type": "git",

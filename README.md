@@ -18,10 +18,12 @@ Also highlights owned and wished products on steamdb.info.
 
 ### Links
 * Features: https://steamdb.info/extension/
-* Privacy Policy: https://steamdb.info/extension/#privacy
+* Privacy Policy: https://steamdb.info/extension/privacy/
 * Chrome Web Store: https://chrome.google.com/webstore/detail/kdbmhfkmnlmbkgbabkdealhhbfhlmmon
 * Mozilla Addons: https://addons.mozilla.org/en-US/firefox/addon/steam-database/
 * Microsoft Edge: https://microsoftedge.microsoft.com/addons/detail/steam-database/hjknpdomhlodgaebegjopkmfafjpbblg
+
+*There are no plans to support Safari at this time due to Apple's policies.*
 
 ### Contributing
 
@@ -32,10 +34,54 @@ When writing code, make sure to run our linter:
 2. Run `npm test` which should report warnings
 3. Run `npm run fix` which should automatically fix most of the reported warnings
 
+#### Localization rules
+
+- Do not localize "SteamDB"
+- Keep the HTML codes intact
+- If there is whitespace in the strings, keep it
+- If there are words that are used by Steam itself (such as discovery queue), match them
+- Substitution tokens like `$1` and strings instead of `<code>` tags should be kept
+
+[Translate on Crowdin](https://crowdin.com/project/steamdb-extension)  
+[![Crowdin](https://badges.crowdin.net/steamdb-extension/localized.svg)](https://crowdin.com/project/steamdb-extension)
+
+To test a specific language in Chrome, see this link:  
+https://developer.chrome.com/docs/extensions/reference/api/i18n#how-to-set-browsers-locale
+
 #### Making a release
 
 Run `npm run version 3.0.0` which updates `manifest.json`, creates a commit, creates a tag,
 and runs `npm run build` which creates a zip file with the release.
+
+### Trade offers support for `for_item` and `my_item`
+
+This extension adds support for `for_item` and `my_item` parameters in `/tradeoffer/new` urls,
+these parameters will automatically add items to trade window upon page load.
+
+* `for_item` specifies an item in partner's inventory.
+* `my_item` specifies an item in your inventory.
+
+Multiple parameters can be specified, a single parameter takes format of `appid_contextid_assetid`.
+
+For example:
+```
+https://steamcommunity.com/tradeoffer/new?partner=[steamid]&for_item=753_6_1234
+https://steamcommunity.com/tradeoffer/new?partner=[steamid]&for_item=753_6_1234&for_item=753_6_5678
+https://steamcommunity.com/tradeoffer/new?partner=[steamid]&my_item=753_6_1234
+https://steamcommunity.com/tradeoffer/new?partner=[steamid]&my_item=753_6_1234&my_item=753_6_5678
+https://steamcommunity.com/tradeoffer/new?partner=[steamid]&for_item=753_6_1234&my_item=753_6_5678
+```
+
+### Automatically open "grant an award" popup from a link using `award`
+
+This extension adds support for `award` parameter in profile, workshop, and other published files such as screenshots.
+
+Open the "grant an award" popup upon page load: `https://steamcommunity.com/id/xpaw?award`
+
+Open popup and pre-select a specific award: `https://steamcommunity.com/id/xpaw?award=17`  
+In this case id 17 is "Take my points".
+
+It works the same way for shared files: `https://steamcommunity.com/sharedfiles/filedetails/?id=2935326022&award=17`
 
 ### License
 Code in this repository is governed by a BSD-style license that can be found in the [LICENSE](LICENSE) file.

@@ -1,62 +1,110 @@
-a.steamdb_link {
-	color: #898a8c;
-}
-
 a.steamdb_link:hover {
 	text-decoration: underline;
 }
 
+.game_area_purchase_game a.steamdb_link,
+html.responsive .game_area_purchase_game a.steamdb_link {
+	color: #ebebeb !important;
+}
+
 .steamdb_error_link {
-	display: block;
-	margin-top: 12px;
+	margin-top: 25px;
+	text-align: center;
 }
 
-.game_purchase_action .steamdb_link {
-	float: left;
-	margin-top: 8px;
+.steamdb_agecheck_hint {
+	margin-top: 25px;
+	text-align: center;
 }
 
-@media (min-width: 600px) {
+.steamdb_agecheck_hint a {
+	text-decoration: underline;
+}
+
+.game_area_purchase_game .steamdb_link {
+	position: absolute;
+	left: 0;
+	top: 10px;
+}
+
+.game_area_purchase_game .steamdb_link[hidden] {
+	visibility: hidden;
+	pointer-events: none;
+}
+
+.game_purchase_sub_dropdown .steamdb_link {
+	position: absolute;
+	top: unset;
+	bottom: -9px;
+	left: 16px;
+}
+
+.linkbar_steamdb {
+	display: none !important;
+}
+
+@media (max-width: 500px) {
 	.game_purchase_sub_dropdown .steamdb_link {
-		position: absolute;
-		bottom: -11px;
-		left: 16px;
+		position: relative;
+		top: unset;
+		bottom: unset;
+		left: unset;
+		margin-bottom: 20px;
 	}
+
+	html.responsive .game_purchase_action .steamdb_link {
+		position: relative;
+		align-self: start;
+		margin-right: auto;
+	}
+
+	html.responsive .linkbar_steamdb {
+		display: block !important;
+	}
+}
+
+#widget .steamdb_link {
+	vertical-align: 6px;
+	margin-left: 10px;
 }
 
 .btn_steamdb .ico16 {
 	background: none;
 }
 
-.steamdb_last_update_old {
-	color: #f44336 !important;
-}
-
-.steamdb_last_update_old::after {
-	display: inline-block;
-	content: " ⚠️️";
+.date:not(:hover) .steamdb_last_update_old {
+	color: #f44336;
 }
 
 .steamdb_stats {
 	font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
 }
 
+.steamdb_stats .block_content_inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 5px;
+}
+
 .steamdb_stats_logo {
 	width: 54px;
 	height: 54px;
-	float: right;
-	opacity: 50%;
+	opacity: 0.5;
 	transition: opacity 0.1s ease-in-out;
 }
 
 .steamdb_stats:hover .steamdb_stats_logo {
-	opacity: 100%;
+	opacity: 1;
 }
 
-.steamdb_stats_name {
-	min-width: 90px;
-	margin-right: 5px;
-	display: inline-block;
+.steamdb_stats_grid {
+	display: grid;
+	grid-template-columns: min-content 1fr;
+	gap: 2px 10px;
+	white-space: nowrap;
+	font-size: 12px;
+	color: #8f98a0;
 }
 
 .steamdb_stats_number {
@@ -70,6 +118,10 @@ a.steamdb_link:hover {
 
 .steamdb_last_update {
 	padding-bottom: 13px;
+}
+
+.steamdb_last_update .date {
+	unicode-bidi: plaintext;
 }
 
 .glance_ctn .release_date + .steamdb_last_update {
@@ -99,6 +151,7 @@ a.steamdb_link:hover {
 	font-family: "Motiva Sans", Arial, Helvetica, sans-serif;
 	color: #c6d4df;
 	display: flex;
+	gap: 10px;
 }
 
 .steamdb_prices_bottom {
@@ -111,13 +164,12 @@ a.steamdb_link:hover {
 	align-self: center;
 	width: 32px;
 	height: 32px;
-	padding-right: 10px;
-	opacity: 50%;
+	opacity: 0.5;
 	transition: opacity 0.1s ease-in-out;
 }
 
 .steamdb_prices:hover img {
-	opacity: 100%;
+	opacity: 1;
 }
 
 .steamdb_prices:hover .steamdb_prices_top {
@@ -128,33 +180,83 @@ a.steamdb_link:hover {
 	color: #c6d4df;
 }
 
-.steamdb_prices b {
+.steamdb_prices_top b {
 	font-weight: bold;
 	color: #a3cf06;
+	unicode-bidi: plaintext;
 }
 
-.steamdb_rating.steamdb_rating_good {
-	color: #6c3;
+a.steamdb_rating.steamdb_rating_good {
+	color: #6c3 !important;
 }
 
-.steamdb_rating.steamdb_rating_average {
-	color: #fc3;
+a.steamdb_rating.steamdb_rating_average {
+	color: #fc3 !important;
 }
 
-.steamdb_rating.steamdb_rating_poor {
-	color: #e60;
+a.steamdb_rating.steamdb_rating_poor {
+	color: #e60 !important;
 }
 
-.steamdb_rating.steamdb_rating_white {
-	color: #aaa;
+a.steamdb_rating.steamdb_rating_white {
+	color: #aaa !important;
 }
 
-.steamdb_rating a {
-	color: #556772 !important;
+a.steamdb_rating:hover {
+	color: #fff;
 }
 
-.steamdb_rating a:hover {
-	color: #fff !important;
+.steamdb_already_in_library_link {
+	color: inherit;
+}
+
+.steamdb_already_in_library_link:hover {
+	color: #fff;
+	text-decoration: underline;
+}
+
+.steamdb_already_in_library_collapse {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
+	padding: 0 10px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+}
+
+.steamdb_already_in_library_collapse:hover,
+.steamdb_already_in_library_collapse:focus {
+	background: hsl(73deg 94% 42% / 50%);
+}
+
+.steamdb_already_in_library_collapse > .graph_toggle_icon {
+	margin: 0;
+}
+
+.steamdb_saleitem_claim,
+.steamdb_cheat_queue {
+	display: flex;
+	align-items: center;
+	gap: 8px 15px;
+}
+
+.steamdb_cheat_queue.discovery_queue_customize_ctn {
+	margin-bottom: 0;
+	border-bottom: 0;
+}
+
+.steamdb_saleitem_claim .btn_medium,
+.steamdb_cheat_queue .btn_medium {
+	margin: 0;
+}
+
+.steamdb_cheat_queue_text {
+	margin-right: auto;
 }
 
 /**
@@ -171,8 +273,13 @@ a.steamdb_link:hover {
 	min-width: 100px;
 }
 
-@media screen and (max-width: 500px) {
+@media (max-width: 500px) {
 	html.responsive .steamdb_stats .block_content_inner {
 		margin-top: 0;
+	}
+
+	.steamdb_saleitem_claim,
+	.steamdb_cheat_queue {
+		flex-wrap: wrap;
 	}
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-GetOption( { 'button-gamehub': true }, function( items )
+GetOption( { 'button-gamehub': true }, ( items ) =>
 {
 	if( !items[ 'button-gamehub' ] )
 	{
@@ -21,11 +21,10 @@ GetOption( { 'button-gamehub': true }, function( items )
 
 	// link
 	const link = document.createElement( 'a' );
-	link.rel = 'noopener';
 	link.className = 'general_btn panel_btn';
-	link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
+	link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/';
 	link.appendChild( image );
-	link.appendChild( document.createTextNode( 'View on SteamDB' ) );
+	link.appendChild( document.createTextNode( _t( 'view_on_steamdb' ) ) );
 
 	container.insertBefore( link, null );
 } );

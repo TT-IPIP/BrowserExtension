@@ -1,6 +1,6 @@
 'use strict';
 
-const progressInfo = document.querySelectorAll( '.progress_info_bold' );
+const progressInfo = document.querySelectorAll( '.badge_title_stats_drops .progress_info_bold' );
 
 if( progressInfo.length > 0 )
 {
@@ -10,11 +10,11 @@ if( progressInfo.length > 0 )
 
 	for( let i = 0; i < progressInfo.length; i++ )
 	{
-		match = progressInfo[ i ].textContent.match( /([0-9]+) card drops? remaining/ );
+		match = progressInfo[ i ].textContent.match( /(?<number>[0-9]+)/ );
 
 		if( match )
 		{
-			match = parseInt( match[ 1 ], 10 ) || 0;
+			match = Number.parseInt( match.groups.number, 10 ) || 0;
 
 			if( match > 0 )
 			{
@@ -26,21 +26,28 @@ if( progressInfo.length > 0 )
 
 	if( apps > 0 )
 	{
-		const text = document.createElement( 'span' );
-		text.className = 'steamdb_drops_remaining';
-		text.appendChild( document.createTextNode( drops + ' drops remaining across ' + apps + ' apps' + ( document.querySelector( '.pageLinks' ) ? ' on this page' : '' ) ) );
-
 		const container = document.querySelector( '.badge_details_set_favorite' );
 
 		if( container )
 		{
-			container.insertBefore( text, container.firstChild );
+			const hasPages = document.querySelector( '.pageLinks' );
+
+			let text = document.createElement( 'span' );
+			text.className = 'steamdb_drops_remaining';
+			text.appendChild( document.createTextNode( _t( hasPages ? 'badges_idle_apps_on_this_page' : 'badges_idle_apps', [ apps ] ) ) );
+			container.prepend( text );
+			container.prepend( document.createTextNode( ' ' ) );
+
+			text = document.createElement( 'span' );
+			text.className = 'steamdb_drops_remaining';
+			text.appendChild( document.createTextNode( _t( hasPages ? 'badges_idle_drops_on_this_page' : 'badges_idle_drops', [ drops ] ) ) );
+			container.prepend( text );
 		}
 	}
 }
 else
 {
-	GetOption( { 'button-gamecards': true }, function( items )
+	GetOption( { 'button-gamecards': true }, ( items ) =>
 	{
 		if( !items[ 'button-gamecards' ] )
 		{
@@ -61,7 +68,7 @@ else
 			return;
 		}
 
-		const badgeid = parseInt( badgeUrl[ 1 ], 10 );
+		const badgeid = Number.parseInt( badgeUrl[ 1 ], 10 );
 
 		const container = document.createElement( 'div' );
 		container.className = 'profile_small_header_additional steamdb';
@@ -71,13 +78,12 @@ else
 		image.src = GetLocalResource( 'icons/white.svg' );
 
 		const span = document.createElement( 'span' );
-		span.dataset.tooltipText = 'View badge on SteamDB';
+		span.dataset.tooltipText = _t( 'view_on_steamdb' );
 		span.appendChild( image );
 
 		const link = document.createElement( 'a' );
-		link.rel = 'noopener';
 		link.className = 'btnv6_blue_hoverfade btn_medium btn_steamdb';
-		link.href = GetHomepage() + 'badge/' + badgeid + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
+		link.href = GetHomepage() + 'badge/' + badgeid + '/';
 		link.appendChild( span );
 
 		container.insertBefore( link, container.firstChild );

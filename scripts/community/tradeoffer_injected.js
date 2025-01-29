@@ -1,26 +1,93 @@
-( function()
-{
-	'use strict';
+'use strict';
 
+( ( () =>
+{
 	if( !window.CTradeOfferStateManager )
 	{
 		return;
 	}
 
-	const originalToggleReady = window.ToggleReady;
-	window.ToggleReady = function( ready )
-	{
-		window.g_rgCurrentTradeStatus.me.ready = ready;
+	const script = document.getElementById( 'steamdb_tradeoffer' );
 
-		if( document.body.dataset.steamdbNoGiftConfirm === 'true' )
+	// for_item support
+	if( script.dataset.urlItemSupport === 'true' && window.g_rgCurrentTradeStatus && window.location.pathname.startsWith( '/tradeoffer/new' ) )
+	{
+		const params = new URLSearchParams( window.location.search );
+		const theirItems = params.getAll( 'for_item' );
+		const myItems = params.getAll( 'my_item' );
+		let redrawTrade = false;
+
+		if( theirItems.length > 0 )
 		{
-			window.g_cTheirItemsInTrade = 1;
-			window.g_bWarnOnReady = false;
+			window.g_rgCurrentTradeStatus.them.ready = false;
+			window.g_rgCurrentTradeStatus.them.assets = [];
+
+			for( const item of theirItems )
+			{
+				const parsed = item.match( /(?<appid>[0-9]+)_(?<contextid>[0-9]+)_(?<assetid>[0-9]+)/ );
+
+				if( parsed === null )
+				{
+					continue;
+				}
+
+				window.g_rgCurrentTradeStatus.them.assets.push( {
+					appid: parsed.groups.appid,
+					contextid: parsed.groups.contextid,
+					assetid: parsed.groups.assetid,
+					amount: 1,
+				} );
+
+				redrawTrade = true;
+			}
 		}
 
-		originalToggleReady.apply( this, arguments );
-	};
+		if( myItems.length > 0 )
+		{
+			window.g_rgCurrentTradeStatus.me.ready = false;
+			window.g_rgCurrentTradeStatus.me.assets = [];
 
+			for( const item of myItems )
+			{
+				const parsed = item.match( /(?<appid>[0-9]+)_(?<contextid>[0-9]+)_(?<assetid>[0-9]+)/ );
+
+				if( parsed === null )
+				{
+					continue;
+				}
+
+				window.g_rgCurrentTradeStatus.me.assets.push( {
+					appid: parsed.groups.appid,
+					contextid: parsed.groups.contextid,
+					assetid: parsed.groups.assetid,
+					amount: 1,
+				} );
+
+				redrawTrade = true;
+			}
+		}
+
+		if( redrawTrade )
+		{
+			window.RedrawCurrentTradeStatus();
+		}
+	}
+
+	// no gift confirmation
+	if( script.dataset.noGiftConfirm === 'true' )
+	{
+		const originalToggleReady = window.ToggleReady;
+		window.ToggleReady = function( ready )
+		{
+			window.g_rgCurrentTradeStatus.me.ready = ready;
+			window.g_cTheirItemsInTrade = 1;
+			window.g_bWarnOnReady = false;
+
+			originalToggleReady.apply( this, arguments );
+		};
+	}
+
+	// better error messages
 	const originalShowAlertDialog = window.ShowAlertDialog;
 	const originalSetAssetOrCurrencyInTrade = window.CTradeOfferStateManager.SetAssetOrCurrencyInTrade;
 	window.CTradeOfferStateManager.SetAssetOrCurrencyInTrade = function SteamDB_SetAssetOrCurrencyInTrade( item )
@@ -92,4 +159,4 @@
 
 		return originalShowAlertDialog.apply( this, arguments );
 	};
-}() );
+} )() );

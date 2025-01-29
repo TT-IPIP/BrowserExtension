@@ -1,6 +1,6 @@
 'use strict';
 
-GetOption( { 'enhancement-skip-agecheck': false }, function( items )
+GetOption( { 'enhancement-skip-agecheck': false }, ( items ) =>
 {
 	if( items[ 'enhancement-skip-agecheck' ] )
 	{
@@ -9,6 +9,13 @@ GetOption( { 'enhancement-skip-agecheck': false }, function( items )
 		element.type = 'text/javascript';
 		element.src = GetLocalResource( 'scripts/community/agecheck_injected.js' );
 
-		document.head.insertBefore( element, document.head.firstChild );
+		if( document.head )
+		{
+			document.head.insertBefore( element, document.head.firstChild );
+		}
+		else
+		{
+			document.documentElement.appendChild( element );
+		}
 	}
 } );

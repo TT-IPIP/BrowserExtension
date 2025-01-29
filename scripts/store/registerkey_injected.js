@@ -1,7 +1,7 @@
-( function()
-{
-	'use strict';
+'use strict';
 
+( ( () =>
+{
 	const script = document.getElementById( 'steamdb_registerkey_hook' );
 	const originalOnRegisterProductKeyFailure = window.OnRegisterProductKeyFailure;
 
@@ -9,7 +9,7 @@
 	{
 		originalOnRegisterProductKeyFailure.apply( this, arguments );
 
-		if( receipt && receipt.line_items && receipt.line_items.length > 0 )
+		if( receipt?.line_items && receipt.line_items.length > 0 )
 		{
 			document.getElementById( 'error_display' ).appendChild( FormatLineItems( receipt.line_items ) );
 		}
@@ -42,8 +42,8 @@
 			lineitem.append( image );
 
 			let link = document.createElement( 'a' );
-			link.href = script.dataset.homepage + 'sub/' + item.packageid + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
-			link.rel = 'noopener noreferrer';
+			link.href = script.dataset.homepage + 'sub/' + item.packageid + '/';
+			link.rel = 'noreferrer';
 			link.target = '_blank';
 			link.appendChild( document.createTextNode( 'SteamDB' ) );
 
@@ -62,4 +62,4 @@
 
 		return fragment;
 	}
-}() );
+} )() );

@@ -4,12 +4,12 @@
 GetOption( {
 	'button-gamehub': true,
 	'button-pcgw': true,
-}, function( items )
+}, ( items ) =>
 {
 	let element;
 	let link;
 	let image;
-	let container = document.querySelector( '.apphub_OtherSiteInfo' );
+	const container = document.querySelector( '.apphub_OtherSiteInfo' );
 
 	if( container )
 	{
@@ -33,10 +33,9 @@ GetOption( {
 		if( element )
 		{
 			link = document.createElement( 'a' );
-			link.rel = 'noopener';
 			link.className = 'apphub_NumInApp';
-			link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/graphs/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
-			link.title = 'View player graphs on SteamDB';
+			link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/charts/';
+			link.title = _t( 'view_on_steamdb' );
 			link.textContent = element.textContent;
 
 			element.parentNode.replaceChild( link, element );
@@ -45,12 +44,11 @@ GetOption( {
 		if( items[ 'button-gamehub' ] )
 		{
 			link = document.createElement( 'a' );
-			link.rel = 'noopener';
 			link.className = 'btnv6_blue_hoverfade btn_medium btn_steamdb';
-			link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
+			link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/';
 
 			element = document.createElement( 'span' );
-			element.dataset.tooltipText = 'View on SteamDB';
+			element.dataset.tooltipText = _t( 'view_on_steamdb' );
 			link.appendChild( element );
 
 			image = document.createElement( 'img' );
@@ -60,75 +58,42 @@ GetOption( {
 			element.appendChild( image );
 
 			container.insertBefore( link, container.firstChild );
+
+			const responsiveMenu = document.querySelector( '.apphub_ResponsiveMenuCtn' );
+
+			if( responsiveMenu )
+			{
+				responsiveMenu.append( link.cloneNode( true ) );
+			}
 		}
 
 		if( items[ 'button-pcgw' ] )
 		{
-			container = document.querySelector( '.apphub_OtherSiteInfo' );
-
-			if( container )
-			{
-				link = document.createElement( 'a' );
-				link.rel = 'noopener';
-				link.className = 'btnv6_blue_hoverfade btn_medium btn_steamdb';
-				link.href = 'https://pcgamingwiki.com/api/appid.php?appid=' + GetCurrentAppID() + '&utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
-
-				element = document.createElement( 'span' );
-				element.dataset.tooltipText = 'View article on PCGamingWiki';
-				link.appendChild( element );
-
-				image = document.createElement( 'img' );
-				image.className = 'ico16';
-				image.src = GetLocalResource( 'icons/pcgamingwiki.svg' );
-
-				element.appendChild( image );
-
-				container.insertBefore( link, container.firstChild );
-
-				container.insertBefore( document.createTextNode( ' ' ), link.nextSibling );
-			}
-		}
-	}
-	else if( items[ 'button-gamehub' ] )
-	{
-		container = document.getElementById( 'rightActionBlock' );
-
-		// Are we in an official game group?
-		if( container )
-		{
-			// Are we in a hacky game group with a custom url?
-			if( GetCurrentAppID() === -1 )
-			{
-				// Try to find game hub link, what possibly could go wrong?
-				element = document.querySelector( 'a[href*="http://steamcommunity.com/app/"], a[href*="https://steamcommunity.com/app/"]' );
-
-				// Let's just hope this doesn't break
-				CurrentAppID = element.href.match( /\/([0-9]+)\/?/ )[ 1 ];
-			}
-
-			// image
-			image = document.createElement( 'img' );
-			image.className = 'steamdb_ogg_icon';
-			image.src = GetLocalResource( 'icons/white.svg' );
-
-			// image container
-			const actionItemIcon = document.createElement( 'div' );
-			actionItemIcon.className = 'actionItemIcon';
-			actionItemIcon.appendChild( image );
-
-			// link
 			link = document.createElement( 'a' );
-			link.rel = 'noopener';
-			link.className = 'linkActionMinor';
-			link.href = GetHomepage() + 'app/' + GetCurrentAppID() + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
-			link.appendChild( document.createTextNode( 'View on SteamDB' ) );
+			link.className = 'btnv6_blue_hoverfade btn_medium btn_steamdb';
+			link.href = 'https://pcgamingwiki.com/api/appid.php?appid=' + GetCurrentAppID() + '&utm_source=SteamDB';
 
-			element = document.createElement( 'div' );
-			element.className = 'actionItem';
-			element.appendChild( actionItemIcon );
-			element.appendChild( link );
+			element = document.createElement( 'span' );
+			element.dataset.tooltipText = _t( 'view_on_pcgamingwiki' );
+			link.appendChild( element );
 
-			container.insertBefore( element, null );
+			image = document.createElement( 'img' );
+			image.className = 'ico16';
+			image.src = GetLocalResource( 'icons/pcgamingwiki.svg' );
+
+			element.appendChild( image );
+
+			container.insertBefore( link, container.firstChild );
+
+			container.insertBefore( document.createTextNode( ' ' ), link.nextSibling );
+
+			const responsiveMenu = document.querySelector( '.apphub_ResponsiveMenuCtn' );
+
+			if( responsiveMenu )
+			{
+				responsiveMenu.append( document.createTextNode( ' ' ) );
+				responsiveMenu.append( link.cloneNode( true ) );
+			}
 		}
 	}
 } );

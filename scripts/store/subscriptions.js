@@ -1,8 +1,9 @@
-( function()
-{
-	'use strict';
+'use strict';
 
-	const homepage = document.getElementById( 'steamdb_subscriptions_hook' ).dataset.homepage;
+( ( () =>
+{
+	const scriptHook = document.getElementById( 'steamdb_subscriptions_hook' );
+	const homepage = scriptHook.dataset.homepage;
 	const originalDropdownSelectOption = window.GamePurchaseDropdownSelectOption;
 
 	window.GamePurchaseDropdownSelectOption = function SteamDB_GamePurchaseDropdownSelectOption( dropdownName, subId )
@@ -17,7 +18,8 @@
 		}
 
 		link = link.parentNode.querySelector( '.steamdb_link' );
-		link.href = `${homepage}sub/${subId}/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension`;
-		link.querySelector( '.steamdb_subid' ).textContent = `Sub ${subId}`;
+		link.hidden = false;
+		link.href = `${homepage}sub/${subId}/`;
+		link.querySelector( '.steamdb_link_id' ).textContent = subId.toString();
 	};
-}() );
+} )() );

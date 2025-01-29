@@ -1,6 +1,6 @@
 'use strict';
 
-GetOption( { 'button-sub': true }, function( items )
+GetOption( { 'button-sub': true }, ( items ) =>
 {
 	if( !items[ 'button-sub' ] )
 	{
@@ -12,12 +12,11 @@ GetOption( { 'button-sub': true }, function( items )
 	if( container )
 	{
 		let element = document.createElement( 'span' );
-		element.appendChild( document.createTextNode( 'View on SteamDB' ) );
+		element.appendChild( document.createTextNode( _t( 'view_on_steamdb' ) ) );
 
 		const link = document.createElement( 'a' );
-		link.rel = 'noopener';
 		link.className = 'action_btn';
-		link.href = GetHomepage() + 'bundle/' + GetCurrentAppID() + '/?utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
+		link.href = GetHomepage() + 'bundle/' + GetCurrentAppID() + '/';
 		link.appendChild( element );
 
 		element = document.createElement( 'div' );

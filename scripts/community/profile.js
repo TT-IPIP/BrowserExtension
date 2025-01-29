@@ -1,7 +1,19 @@
 'use strict';
 
-GetOption( { 'profile-calculator': true }, function( items )
+GetOption( {
+	'profile-calculator': true,
+	'enhancement-award-popup-url': true,
+}, ( items ) =>
 {
+	if( items[ 'enhancement-award-popup-url' ] && window.location.search.includes( 'award' ) )
+	{
+		const script = document.createElement( 'script' );
+		script.id = 'steamdb_profile_award';
+		script.type = 'text/javascript';
+		script.src = GetLocalResource( 'scripts/community/profile_award_injected.js' );
+		document.head.appendChild( script );
+	}
+
 	if( !items[ 'profile-calculator' ] )
 	{
 		return;
@@ -32,29 +44,24 @@ GetOption( { 'profile-calculator': true }, function( items )
 
 	if( isCommunityID )
 	{
-		url += steamID + '/?';
+		url += `${steamID}/`;
 	}
 	else
 	{
-		url += '?player=' + steamID + '&';
+		url += `?player=${steamID}`;
 	}
-
-	url += 'utm_source=Steam&utm_medium=Steam&utm_campaign=SteamDB%20Extension';
-
-	let image, element;
 
 	if( container )
 	{
-		image = document.createElement( 'img' );
+		const image = document.createElement( 'img' );
 		image.className = 'steamdb_popup_icon';
 		image.src = GetLocalResource( 'icons/white.svg' );
 
-		element = document.createElement( 'a' );
-		element.rel = 'noopener';
+		const element = document.createElement( 'a' );
 		element.href = url;
 		element.className = 'popup_menu_item';
 		element.appendChild( image );
-		element.appendChild( document.createTextNode( '\u00a0 SteamDB Calculator' ) );
+		element.appendChild( document.createTextNode( '\u00a0 ' + _t( 'steamdb_calculator' ) ) );
 
 		container.insertBefore( element, null );
 	}
@@ -64,19 +71,17 @@ GetOption( { 'profile-calculator': true }, function( items )
 
 		if( container )
 		{
-			const text = document.createElement( 'span' );
-
-			image = document.createElement( 'img' );
+			const image = document.createElement( 'img' );
 			image.src = GetLocalResource( 'icons/white.svg' );
 			image.className = 'steamdb_self_profile';
 
+			const text = document.createElement( 'span' );
+			text.dataset.tooltipText = _t( 'steamdb_calculator' );
 			text.appendChild( image );
 
-			element = document.createElement( 'a' );
-			element.rel = 'noopener';
+			const element = document.createElement( 'a' );
 			element.className = 'btn_profile_action btn_medium';
 			element.href = url;
-			element.title = 'SteamDB Calculator';
 			element.appendChild( text );
 
 			container.appendChild( element );
